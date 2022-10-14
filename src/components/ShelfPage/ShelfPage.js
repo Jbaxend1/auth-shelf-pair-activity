@@ -6,6 +6,7 @@ function ShelfPage() {
   const [shelfList, setShelfList] = useState([]);
   const [item, setItem] = useState('');
   const [url, setUrl] = useState('');
+  const [itemId, setId] = useState('');
 
   useEffect(() => {
     fetchPets();
@@ -32,6 +33,17 @@ function ShelfPage() {
   })
 }
 
+const deleteItem = (e) => {
+  const itemId = e.target.value;
+  axios.delete(`/api/shelf/${itemId}`)
+      .then(() => {
+        fetchPets();
+      }).catch((e) => {
+        console.log(e);
+        alert('Something wrong in Delete');
+      })
+}
+
   return (
     <div className="container">
       <h2>Shelf</h2>
@@ -56,7 +68,7 @@ function ShelfPage() {
                         <br />
                         <div className="desc">{item.description}</div>
                         <div style={{textAlign: 'center', padding: '5px'}}>
-                          <button style={{cursor: 'pointer'}}>Delete</button>
+                          <button value={item.id} onClick={deleteItem} style={{cursor: 'pointer'}}>Delete</button>
                         </div>
                     </div>
                  </div>
